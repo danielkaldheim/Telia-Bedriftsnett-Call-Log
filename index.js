@@ -25,7 +25,7 @@ client.on('connect', res => {
               const direction = log['incoming'] == 1 ? 'incomming' : 'outgoing';
               console.log(JSON.stringify(log, null, 4));
               client.publish(
-                'call/' + process.env.PHONE + '/' + direction,
+                'call/' + process.env.TELIA_USERNAME + '/' + direction,
                 JSON.stringify(log)
               );
               prev = log;
