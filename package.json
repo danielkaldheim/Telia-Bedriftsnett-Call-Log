@@ -1,0 +1,16 @@
+{
+  "name": "telia-call-log",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Daniel Rufus Kaldheim",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "https": "^1.0.0",
+    "mqtt": "^2.18.8",
+    "querystring": "^0.2.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
