@@ -14,23 +14,30 @@ client.on('connect', res => {
   sb.authenticate(process.env.TELIA_USERNAME, process.env.TELIA_PASSWORD).then(
     result => {
       setInterval(async () => {
-        const data = await sb.getCallLog(1);
-        if (data && data.calls) {
-          if (data.calls.length > 0) {
-            const log = data.calls[0];
-            if (prev === null) {
-              prev = log;
-            }
-            if (JSON.stringify(prev) !== JSON.stringify(log)) {
-              const direction = log['incoming'] == 1 ? 'incomming' : 'outgoing';
-              console.log(JSON.stringify(log, null, 4));
-              client.publish(
-                'call/' + process.env.TELIA_USERNAME + '/' + direction,
-                JSON.stringify(log)
-              );
-              prev = log;
+        try {
+          const data = await sb.getCallLog(1);
+          if (data && data.calls) {
+            if (data.calls.length > 0) {
+              const log = data.calls[0];
+
+              if (prev === null) {
+                prev = log;
+              }
+              if (JSON.stringify(prev) !== JSON.stringify(log)) {
+                const direction =
+                  log['incoming'] == 1 ? 'incomming' : 'outgoing';
+                console.log(JSON.stringify(log, null, 4));
+                client.publish(
+                  'call/' + process.env.TELIA_USERNAME + '/' + direction,
+                  JSON.stringify(log)
+                );
+                prev = log;
+              }
             }
           }
+        } catch (error) {
+          console.error(error);
+          process.exit();
         }
       }, 1000);
     }
